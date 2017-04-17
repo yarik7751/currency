@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Currency_yarik</string>
+    <string name="currency">Курсы валют</string>
+    <string name="chart">Динамика</string>
 </resources>

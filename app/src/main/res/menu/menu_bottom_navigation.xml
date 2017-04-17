@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_currency"
+        android:icon="@drawable/ic_attach_money_white_24dp"
+        android:title="@string/currency"/>
+    <item
+        android:id="@+id/action_chart"
+        android:icon="@drawable/ic_show_chart_white_24dp"
+        android:title="@string/chart" />
+</menu>
