@@ -1,5 +1,6 @@
 package by.yarik.currency.ui.activity.base;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -14,15 +15,24 @@ import butterknife.ButterKnife;
 
 public class BaseActivity extends AppCompatActivity {
 
+    protected ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        progressDialog = new ProgressDialog(this);
     }
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        progressDialog.dismiss();
     }
 
     /**
@@ -73,5 +83,27 @@ public class BaseActivity extends AppCompatActivity {
      */
     protected int getColorRes(int res) {
         return getResources().getColor(res);
+    }
+
+    /**
+     * Устанавливает сообщение в диалог ожидания
+     * @param message
+     */
+    protected void setProgressDialogMessage(String message) {
+        progressDialog.setMessage(message);
+    }
+
+    /**
+     * Показывает диалог ожидания
+     */
+    protected void showProgressDialog() {
+        progressDialog.show();
+    }
+
+    /**
+     * скрывает диалог ожидания
+     */
+    protected void hideProgressDialog() {
+        progressDialog.hide();
     }
 }
