@@ -2,7 +2,11 @@
     <string name="app_name">Currency_yarik</string>
     <string name="currency">Курсы валют</string>
     <string name="chart">Дынаміка</string>
+    <string name="info">Інфармацыя</string>
     <string name="internet_connection_error">Няма падлучэння да інтэрнэту!</string>
     <string name="loading_currencies">Загрузка валют ...</string>
     <string name="query_no_answer">Не атрымалася атрымаць адказ запыту</string>
+    <string name="selected_currencies">Выбраныя валюты</string>
+    <string name="all_currencies">Усе валюты</string>
+    <string name="get_now_rate">Атрыманне бягучага курсу ...</string>
 </resources>

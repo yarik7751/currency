@@ -6,17 +6,20 @@ import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import by.yarik.currency.app.CurrencyApplication;
 import by.yarik.currency.util.api.pojo.Currency;
+import by.yarik.currency.util.api.pojo.CurrencyRate;
 import okhttp3.CookieJar;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.Response;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Query;
 
 public class Api {
 
@@ -60,6 +63,42 @@ public class Api {
         if(response != null) {
             if(response.code() == CODE_SUCCESS) {
                 Currency.setInstance(response.body());
+            }
+            result = response.code() + "";
+        }
+        return result;
+    }
+
+    public static String getRates(String onDate, Integer periodicity, Integer paramMode) {
+        Call<List<CurrencyRate>> call = getIApiService().getRates(onDate, periodicity, paramMode);
+        Response<List<CurrencyRate>> response = null;
+        String result = "";
+        try {
+            response = call.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(response != null) {
+            if(response.code() == CODE_SUCCESS) {
+                CurrencyRate.setInstance(response.body());
+            }
+            result = response.code() + "";
+        }
+        return result;
+    }
+
+    public static String getRates(Integer periodicity, Integer paramMode) {
+        Call<List<CurrencyRate>> call = getIApiService().getRates(periodicity, paramMode);
+        Response<List<CurrencyRate>> response = null;
+        String result = "";
+        try {
+            response = call.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(response != null) {
+            if(response.code() == CODE_SUCCESS) {
+                CurrencyRate.setInstance(response.body());
             }
             result = response.code() + "";
         }

@@ -20,6 +20,7 @@ import by.yarik.currency.R;
 import by.yarik.currency.ui.activity.base.BaseActivity;
 import by.yarik.currency.ui.fragment.ChartFragment;
 import by.yarik.currency.ui.fragment.CurrencyFragment;
+import by.yarik.currency.ui.fragment.InfoFragment;
 import by.yarik.currency.util.Const;
 import by.yarik.currency.util.api.Api;
 import by.yarik.currency.util.api.pojo.Currency;
@@ -44,6 +45,8 @@ public class MainActivity extends BaseActivity {
         if(Currency.count(Currency.class) == 0) {
             startService(new Intent(this, CurrencyService.class));
             showProgressDialog();
+        } else {
+            setCurrencyFragment();
         }
 
         bnvMenu.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -51,11 +54,15 @@ public class MainActivity extends BaseActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_currency:
-                        onSwitchFragment(CurrencyFragment.getInstance(), CurrencyFragment.class.getName(), false, true, R.id.container);
+                        setCurrencyFragment();
                         break;
 
                     case R.id.action_chart:
                         onSwitchFragment(ChartFragment.getInstance(), ChartFragment.class.getName(), false, true, R.id.container);
+                        break;
+
+                    case R.id.action_info:
+                        onSwitchFragment(InfoFragment.getInstance(), InfoFragment.class.getName(), false, true, R.id.container);
                         break;
                 }
                 return true;
@@ -86,6 +93,10 @@ public class MainActivity extends BaseActivity {
         unregisterReceiver(getCurrencyBroadcastReceiver);
     }
 
+    private void setCurrencyFragment() {
+        onSwitchFragment(CurrencyFragment.getInstance(), CurrencyFragment.class.getName(), false, true, R.id.container);
+    }
+
     public class GetCurrencyBroadcastReceiver extends BroadcastReceiver {
 
         @Override
@@ -93,6 +104,8 @@ public class MainActivity extends BaseActivity {
             String response = intent.getStringExtra(Const.RESPONSE);
             if(Currency.getInstance() == null && response == null && !response.equals(Api.CODE_SUCCESS + "")) {
                 showMessage(R.string.query_no_answer);
+            } else {
+                setCurrencyFragment();
             }
             hideProgressDialog();
         }

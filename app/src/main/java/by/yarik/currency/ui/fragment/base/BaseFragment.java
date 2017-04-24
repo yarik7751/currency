@@ -54,6 +54,7 @@ public class BaseFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         if(unbinder != null) unbinder.unbind();
+        progressDialog.dismiss();
     }
 
     /**

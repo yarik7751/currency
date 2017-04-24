@@ -12,7 +12,7 @@ public class CurrencyService extends IntentService {
 
     public static final String TAG = "CurrencyService";
     public static final String ACTION = "by.yarik.currency.util.api.service.CurrencyService";
-    private static final String NAME_STREAM = "by.yarik.currency.util.api.service.CurrencyService";
+    private static final String NAME_STREAM = "CurrencyService";
 
     public CurrencyService() {
         super(NAME_STREAM);

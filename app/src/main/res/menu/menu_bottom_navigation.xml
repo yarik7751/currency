@@ -8,4 +8,9 @@
         android:id="@+id/action_chart"
         android:icon="@drawable/ic_show_chart_white_24dp"
         android:title="@string/chart" />
+
+    <item
+        android:id="@+id/action_info"
+        android:icon="@drawable/ic_info_outline_white_24dp"
+        android:title="@string/info" />
 </menu>

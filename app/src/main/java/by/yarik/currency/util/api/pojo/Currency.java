@@ -21,11 +21,11 @@ public class Currency extends SugarRecord {
 
     @SerializedName("Cur_ID")
     @Expose
-    private String curId;
+    private Integer curId;
 
     @SerializedName("Cur_ParentID")
     @Expose
-    private String curParentId;
+    private Integer curParentId;
 
     @SerializedName("Cur_Code")
     @Expose
@@ -73,11 +73,11 @@ public class Currency extends SugarRecord {
 
     @SerializedName("Cur_Scale")
     @Expose
-    private String curScale;
+    private Integer curScale;
 
     @SerializedName("Cur_Periodicity")
     @Expose
-    private String curPeriodicity;
+    private Integer curPeriodicity;
 
     @SerializedName("Cur_DateStart")
     @Expose
@@ -119,11 +119,11 @@ public class Currency extends SugarRecord {
         this.curDateStart = curDateStart;
     }
 
-    public String getCurId() {
+    public Integer getCurId() {
         return curId;
     }
 
-    public void setCurId(String curId) {
+    public void setCurId(Integer curId) {
         this.curId = curId;
     }
 
@@ -175,19 +175,19 @@ public class Currency extends SugarRecord {
         this.curNameMulti = curNameMulti;
     }
 
-    public String getCurParentId() {
+    public Integer getCurParentId() {
         return curParentId;
     }
 
-    public void setCurParentId(String curParentId) {
+    public void setCurParentId(Integer curParentId) {
         this.curParentId = curParentId;
     }
 
-    public String getCurPeriodicity() {
+    public Integer getCurPeriodicity() {
         return curPeriodicity;
     }
 
-    public void setCurPeriodicity(String curPeriodicity) {
+    public void setCurPeriodicity(Integer curPeriodicity) {
         this.curPeriodicity = curPeriodicity;
     }
 
@@ -215,11 +215,19 @@ public class Currency extends SugarRecord {
         this.curQuotNameEng = curQuotNameEng;
     }
 
-    public String getCurScale() {
+    public static List<Currency> getCurrencies() {
+        return currencies;
+    }
+
+    public static void setCurrencies(List<Currency> currencies) {
+        Currency.currencies = currencies;
+    }
+
+    public Integer getCurScale() {
         return curScale;
     }
 
-    public void setCurScale(String curScale) {
+    public void setCurScale(Integer curScale) {
         this.curScale = curScale;
     }
 }

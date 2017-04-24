@@ -7,4 +7,5 @@
     <color name="background">#dfdfdf</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="select_currency">#f4c51d</color>
 </resources>
