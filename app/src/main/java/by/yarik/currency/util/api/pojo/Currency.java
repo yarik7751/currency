@@ -1,13 +1,14 @@
 package by.yarik.currency.util.api.pojo;
 
-import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.orm.SugarRecord;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.List;
 
-public class Currency extends SugarRecord {
+@DatabaseTable(tableName = "currency")
+public class Currency {
 
     public Currency() {}
 
@@ -19,72 +20,92 @@ public class Currency extends SugarRecord {
         return currencies;
     }
 
+    @DatabaseField(generatedId = true)
+    private int id;
+
     @SerializedName("Cur_ID")
     @Expose
+	@DatabaseField()
     private Integer curId;
 
     @SerializedName("Cur_ParentID")
     @Expose
+	@DatabaseField()
     private Integer curParentId;
 
     @SerializedName("Cur_Code")
     @Expose
+	@DatabaseField()
     private String curCode;
 
     @SerializedName("Cur_Abbreviation")
     @Expose
+	@DatabaseField()
     private String curAbbreviation;
 
     @SerializedName("Cur_Name")
     @Expose
+	@DatabaseField()
     private String curName;
 
     @SerializedName("Cur_Name_Bel")
     @Expose
+	@DatabaseField()
     private String curNameBel;
 
     @SerializedName("Cur_Name_Eng")
     @Expose
+	@DatabaseField()
     private String curNameEng;
 
     @SerializedName("Cur_QuotName")
     @Expose
+	@DatabaseField()
     private String curQuotName;
 
     @SerializedName("Cur_QuotName_Bel")
     @Expose
+	@DatabaseField()
     private String curQuotNameBel;
 
     @SerializedName("Cur_QuotName_Eng")
     @Expose
+	@DatabaseField()
     private String curQuotNameEng;
 
     @SerializedName("Cur_NameMulti")
     @Expose
+	@DatabaseField()
     private String curNameMulti;
 
     @SerializedName("Cur_Name_BelMulti")
     @Expose
+	@DatabaseField()
     private String curNameBelMulti;
 
     @SerializedName("Cur_Name_EngMulti")
     @Expose
+	@DatabaseField()
     private String curNameEngMulti;
 
     @SerializedName("Cur_Scale")
     @Expose
+	@DatabaseField()
     private Integer curScale;
 
     @SerializedName("Cur_Periodicity")
     @Expose
+	@DatabaseField()
     private Integer curPeriodicity;
 
     @SerializedName("Cur_DateStart")
     @Expose
+	@DatabaseField()
     private String curDateStart;
 
     @SerializedName("Cur_DateEnd")
     @Expose
+	@DatabaseField()
     private String curDateEnd;
 
     public String getCurAbbreviation() {

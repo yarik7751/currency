@@ -2,11 +2,10 @@ package by.yarik.currency.util.api.pojo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.orm.SugarRecord;
 
 import java.util.List;
 
-public class CurrencyRate extends SugarRecord {
+public class CurrencyRate{
 
     public CurrencyRate() {}
 

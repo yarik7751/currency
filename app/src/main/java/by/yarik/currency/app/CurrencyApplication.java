@@ -3,8 +3,7 @@ package by.yarik.currency.app;
 import android.app.Application;
 import android.content.Context;
 
-import com.orm.SugarApp;
-import com.orm.SugarContext;
+import by.yarik.currency.util.db.HelperFactory;
 
 public class CurrencyApplication extends Application {
 
@@ -14,7 +13,13 @@ public class CurrencyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
-        SugarContext.init(context);
+        HelperFactory.setHelper(context);
+    }
+
+    @Override
+    public void onTerminate() {
+        HelperFactory.releaseHelper();
+        super.onTerminate();
     }
 
     public static Context getAppContext() {

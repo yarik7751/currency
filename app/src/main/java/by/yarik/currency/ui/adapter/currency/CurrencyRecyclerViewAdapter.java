@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.orm.query.Condition;
-import com.orm.query.Select;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +16,7 @@ import by.yarik.currency.R;
 import by.yarik.currency.util.CustomSharedPreference;
 import by.yarik.currency.util.api.pojo.Currency;
 import by.yarik.currency.util.api.pojo.CurrencyRate;
+import by.yarik.currency.util.db.HelperFactory;
 
 public class CurrencyRecyclerViewAdapter extends RecyclerView.Adapter<CurrencyRecyclerViewAdapter.CurrencyHolder> {
 
@@ -98,8 +96,8 @@ public class CurrencyRecyclerViewAdapter extends RecyclerView.Adapter<CurrencyRe
     }
 
     private String getBelName(CurrencyRate currencyRate) {
-        return Select.from(Currency.class)
-                .where(Condition.prop("Cur_Abbreviation").eq(currencyRate.getCurAbbreviation())).list().get(0).getCurNameBel();
+        List<Currency> currencies = HelperFactory.getHelper().getCurrencyDAO().getCurrencyByAbbreviation(currencyRate.getCurAbbreviation());
+        return currencies.get(currencies.size() - 1).getCurNameBelMulti();
     }
 
     public class CurrencyHolder extends RecyclerView.ViewHolder {

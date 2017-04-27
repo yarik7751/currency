@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.orm.SugarDb;
+import java.sql.SQLException;
 
 import butterknife.BindView;
 import by.yarik.currency.R;
@@ -25,6 +25,7 @@ import by.yarik.currency.util.Const;
 import by.yarik.currency.util.api.Api;
 import by.yarik.currency.util.api.pojo.Currency;
 import by.yarik.currency.util.api.service.CurrencyService;
+import by.yarik.currency.util.db.HelperFactory;
 
 public class MainActivity extends BaseActivity {
 
@@ -41,8 +42,15 @@ public class MainActivity extends BaseActivity {
 
         setProgressDialogMessage(getString(R.string.loading_currencies));
 
-        Log.d(TAG, "Currency.count: " + Currency.count(Currency.class));
-        if(Currency.count(Currency.class) == 0) {
+        long count = 0;
+        try {
+            count = HelperFactory.getHelper().getCurrencyDAO().countOf();
+        } catch (SQLException e) {
+            count = 0;
+            e.printStackTrace();
+        }
+        Log.d(TAG, "Currency.count: " + count);
+        if(count <= 0) {
             startService(new Intent(this, CurrencyService.class));
             showProgressDialog();
         } else {

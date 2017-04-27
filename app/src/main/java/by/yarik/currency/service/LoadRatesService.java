@@ -1,4 +1,4 @@
-package by.yarik.currency;
+package by.yarik.currency.service;
 
 import android.app.Service;
 import android.content.Intent;

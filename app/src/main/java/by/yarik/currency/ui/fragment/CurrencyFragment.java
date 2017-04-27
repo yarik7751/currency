@@ -13,9 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.BindView;
-import by.yarik.currency.LoadRatesService;
+import by.yarik.currency.service.LoadRatesService;
 import by.yarik.currency.R;
-import by.yarik.currency.ui.activity.MainActivity;
 import by.yarik.currency.ui.adapter.currency.CurrencyRecyclerViewAdapter;
 import by.yarik.currency.ui.adapter.currency.OnSharedPreferencesChange;
 import by.yarik.currency.ui.fragment.base.BaseFragment;
@@ -24,7 +23,6 @@ import by.yarik.currency.util.CustomSharedPreference;
 import by.yarik.currency.util.api.Api;
 import by.yarik.currency.util.api.pojo.CurrencyRate;
 import by.yarik.currency.util.api.service.CurrencyRateService;
-import by.yarik.currency.util.api.service.CurrencyService;
 
 public class CurrencyFragment extends BaseFragment {
 
