@@ -32,6 +32,7 @@
         <service android:name=".util.api.service.CurrencyService"></service>
         <service android:name=".util.api.service.CurrencyRateService"></service>
         <service android:name=".service.LoadRatesService"></service>
+        <service android:name=".util.api.service.DynamicService"></service>
     </application>
 
 </manifest>

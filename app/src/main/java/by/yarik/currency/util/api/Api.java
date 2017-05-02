@@ -7,10 +7,12 @@ import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import by.yarik.currency.app.CurrencyApplication;
+import by.yarik.currency.util.DateUtils;
 import by.yarik.currency.util.api.pojo.Currency;
 import by.yarik.currency.util.api.pojo.CurrencyRate;
 import okhttp3.CookieJar;
@@ -99,6 +101,28 @@ public class Api {
         if(response != null) {
             if(response.code() == CODE_SUCCESS) {
                 CurrencyRate.setInstance(response.body());
+            }
+            result = response.code() + "";
+        }
+        return result;
+    }
+
+    public static String getDynamic(String curId) {
+        Date dateNow = new Date();
+        String dateNowStr = DateUtils.getDateByStr(dateNow, DateUtils.DATE_FORMAT_DYNAMIC);
+        dateNow.setMonth(dateNow.getMonth() - 1);
+        String dateMonthAgo = DateUtils.getDateByStr(dateNow, DateUtils.DATE_FORMAT_DYNAMIC);
+        Call<List<CurrencyRate>> call = getIApiService().getDynamic(curId, dateMonthAgo, dateNowStr);
+        Response<List<CurrencyRate>> response = null;
+        String result = "";
+        try {
+            response = call.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(response != null) {
+            if(response.code() == CODE_SUCCESS) {
+                CurrencyRate.setInstanceDynamic(response.body());
             }
             result = response.code() + "";
         }

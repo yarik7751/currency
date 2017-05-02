@@ -58,9 +58,8 @@ public class CurrencyRecyclerViewAdapter extends RecyclerView.Adapter<CurrencyRe
     @Override
     public void onBindViewHolder(CurrencyHolder holder, final int position) {
         holder.tvNameCode.setText(currencyRateList.get(position).getCurAbbreviation());
-        String scaleValueStr = currencyRateList.get(position).getCurScale() + "";
-        String scale = currencyRateList.get(position).getCurScale() > 1 ? "(" + scaleValueStr + "x) " : "";
-        holder.tvName.setText(scale + getBelName(currencyRateList.get(position)));
+        int scale = currencyRateList.get(position).getCurScale();
+        holder.tvName.setText((scale > 1 ? scale + " " : "") + getBelName(scale, currencyRateList.get(position)));
         holder.tvRate.setText(currencyRateList.get(position).getCurOfficialRate() + "");
         if(variant == SELECTED_CURRENCY) {
             holder.imgSelectCurr.setImageResource(R.drawable.ic_star_border_white_24dp);
@@ -95,9 +94,13 @@ public class CurrencyRecyclerViewAdapter extends RecyclerView.Adapter<CurrencyRe
         return currencyRateList == null ? 0 : currencyRateList.size();
     }
 
-    private String getBelName(CurrencyRate currencyRate) {
+    private String getBelName(int scale, CurrencyRate currencyRate) {
         List<Currency> currencies = HelperFactory.getHelper().getCurrencyDAO().getCurrencyByAbbreviation(currencyRate.getCurAbbreviation());
-        return currencies.get(currencies.size() - 1).getCurNameBelMulti();
+        if(scale > 1) {
+            return currencies.get(currencies.size() - 1).getCurNameBelMulti();
+        } else {
+            return currencies.get(currencies.size() - 1).getCurNameBel();
+        }
     }
 
     public class CurrencyHolder extends RecyclerView.ViewHolder {

@@ -9,4 +9,5 @@
     <string name="selected_currencies">Выбраныя валюты</string>
     <string name="all_currencies">Усе валюты</string>
     <string name="get_now_rate">Атрыманне бягучага курсу ...</string>
+    <string name="wait">Пачакайце</string>
 </resources>

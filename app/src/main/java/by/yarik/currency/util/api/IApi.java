@@ -7,6 +7,7 @@ import by.yarik.currency.util.api.pojo.Currency;
 import by.yarik.currency.util.api.pojo.CurrencyRate;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface IApi {
@@ -28,5 +29,12 @@ public interface IApi {
     Call<List<CurrencyRate>> getRates(
             @Query("Periodicity") Integer periodicity,
             @Query ("ParamMode") Integer paramMode
+    );
+
+    @GET("Rates/Dynamics/{curId}")
+    Call<List<CurrencyRate>> getDynamic(
+            @Path("curId") String curId,
+            @Query("startDate") String startDate,
+            @Query("endDate") String endDate
     );
 }

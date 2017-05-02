@@ -41,6 +41,14 @@ public class CurrencyRate{
         return currencies;
     }
 
+    private static List<CurrencyRate> currenciesDynamic = null;
+    public static void setInstanceDynamic(List<CurrencyRate> _currenciesDynamic) {
+        currenciesDynamic = _currenciesDynamic;
+    }
+    public static List<CurrencyRate> getInstanceDynamic() {
+        return currenciesDynamic;
+    }
+
     public String getCurAbbreviation() {
         return curAbbreviation;
     }
@@ -95,5 +103,10 @@ public class CurrencyRate{
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return getDate() + " " + getCurOfficialRate();
     }
 }
