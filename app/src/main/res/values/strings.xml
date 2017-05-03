@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Currency_yarik</string>
+    <string name="app_name">Курсы валют у Беларусі</string>
     <string name="currency">Курсы валют</string>
     <string name="chart">Дынаміка</string>
-    <string name="info">Інфармацыя</string>
+    <string name="info">Калькулятар</string>
     <string name="internet_connection_error">Няма падлучэння да інтэрнэту!</string>
     <string name="loading_currencies">Загрузка валют ...</string>
     <string name="query_no_answer">Не атрымалася атрымаць адказ запыту</string>
@@ -10,4 +10,10 @@
     <string name="all_currencies">Усе валюты</string>
     <string name="get_now_rate">Атрыманне бягучага курсу ...</string>
     <string name="wait">Пачакайце</string>
+    <string name="loading_data">Дадзеные загружаюцца</string>
+    <string name="ok">OK</string>
+    <string name="attention">Увага</string>
+    <string name="chart_message">Абярыце, калі ласка, валюты для адсочвання курсу!</string>
+    <string name="sum_exchange">Сума для абмену</string>
+    <string name="attention_calculator">Увага!\nКанчатковы кошт можа змяніцца ў залежнасці ад курсу куплі/продажы Вашага банку.</string>
 </resources>

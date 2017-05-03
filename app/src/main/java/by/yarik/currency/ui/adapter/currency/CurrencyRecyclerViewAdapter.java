@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import by.yarik.currency.R;
+import by.yarik.currency.util.AndroidUtils;
 import by.yarik.currency.util.CustomSharedPreference;
 import by.yarik.currency.util.api.pojo.Currency;
 import by.yarik.currency.util.api.pojo.CurrencyRate;
@@ -61,6 +62,9 @@ public class CurrencyRecyclerViewAdapter extends RecyclerView.Adapter<CurrencyRe
         int scale = currencyRateList.get(position).getCurScale();
         holder.tvName.setText((scale > 1 ? scale + " " : "") + getBelName(scale, currencyRateList.get(position)));
         holder.tvRate.setText(currencyRateList.get(position).getCurOfficialRate() + "");
+        if(position == getItemCount() - 1) {
+            holder.itemView.setPadding(0, 0, 0, AndroidUtils.dp(8));
+        }
         if(variant == SELECTED_CURRENCY) {
             holder.imgSelectCurr.setImageResource(R.drawable.ic_star_border_white_24dp);
         }

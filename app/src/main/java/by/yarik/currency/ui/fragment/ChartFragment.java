@@ -2,31 +2,52 @@ package by.yarik.currency.ui.fragment;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import by.yarik.currency.R;
+import by.yarik.currency.ui.CustomDialogs;
+import by.yarik.currency.ui.activity.MainActivity;
 import by.yarik.currency.ui.adapter.page.SelectedCurrenciesPageAdapter;
 import by.yarik.currency.ui.fragment.base.BaseFragment;
 import by.yarik.currency.util.Const;
 import by.yarik.currency.util.CustomSharedPreference;
+import by.yarik.currency.util.DateUtils;
 import by.yarik.currency.util.api.Api;
 import by.yarik.currency.util.api.pojo.Currency;
 import by.yarik.currency.util.api.pojo.CurrencyRate;
@@ -40,7 +61,8 @@ public class ChartFragment extends BaseFragment {
     @BindView(R.id.vp_selected_currencies) ViewPager vpSelectedCurrencies;
     @BindView(R.id.img_left) ImageView imgLeft;
     @BindView(R.id.img_right) ImageView imgRight;
-
+    @BindView(R.id.lc_chart) LineChart lcChart;
+    @BindView(R.id.ll_main) LinearLayout llMain;
     private List<Currency> currencies;
 
     private DynamicBroadcastReceiver dynamicBroadcastReceiver;
@@ -56,13 +78,7 @@ public class ChartFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currencies = new ArrayList<>();
-        String[] elems = CustomSharedPreference.getSelectCurrencies(getContext()).split(";");
-        Log.d(TAG, "elems.length: " + elems.length);
-        for(String elem : elems) {
-            List<Currency> currencies = HelperFactory.getHelper().getCurrencyDAO().getCurrencyByAbbreviation(elem);
-            this.currencies.add(currencies.get(currencies.size() - 1));
-        }
+
     }
 
     @Override
@@ -85,6 +101,10 @@ public class ChartFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if(!setSelectedCurrencies()) {
+            return;
+        }
+
         vpSelectedCurrencies.setAdapter(new SelectedCurrenciesPageAdapter(getViewPageInfo()));
         vpSelectedCurrencies.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -100,6 +120,8 @@ public class ChartFragment extends BaseFragment {
                 }
             }
         });
+        setChartSettings();
+        requestDynamics();
     }
 
     @Override
@@ -138,6 +160,78 @@ public class ChartFragment extends BaseFragment {
         return info;
     }
 
+    private void setDataOnChart() {
+        List<Entry> entries = new ArrayList<Entry>();
+        List<CurrencyRate> currencyDynamic = CurrencyRate.getInstanceDynamic();
+        for(int i = 0; i < currencyDynamic.size(); i++) {
+            entries.add(new Entry(DateUtils.stringToUnix(currencyDynamic.get(i).getDate()), currencyDynamic.get(i).getCurOfficialRate().floatValue()));
+        }
+        LineDataSet lineDataSet = new LineDataSet(entries, "");
+        lineDataSet.setColor(getResources().getColor(R.color.chart_values));
+        lineDataSet.setCircleColor(getResources().getColor(R.color.chart_values));
+        lineDataSet.setCircleColorHole(getResources().getColor(R.color.chart_values));
+        LineData lineData = new LineData(lineDataSet);
+        lcChart.setData(lineData);
+        lcChart.invalidate();
+    }
+
+    private boolean setSelectedCurrencies() {
+        currencies = new ArrayList<>();
+        String selectedCurrencies = CustomSharedPreference.getSelectCurrencies(getContext());
+        String[] elems = selectedCurrencies.split(";");
+        Log.d(TAG, "getSelectCurrencies.length: " + selectedCurrencies.length());
+        Log.d(TAG, "getSelectCurrencies: " + selectedCurrencies);
+        Log.d(TAG, "elems.length: " + elems.length);
+        Log.d(TAG, "elems: " + Arrays.toString(elems));
+        if(!TextUtils.isEmpty(selectedCurrencies)) {
+            for (String elem : elems) {
+                List<Currency> currencies = HelperFactory.getHelper().getCurrencyDAO().getCurrencyByAbbreviation(elem);
+                this.currencies.add(currencies.get(currencies.size() - 1));
+            }
+            Log.d(TAG, "currencies.size(): " + currencies.size());
+            return true;
+        } else {
+            llMain.setVisibility(View.GONE);
+            CustomDialogs.dialogSelectCurr(getContext(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ((MainActivity) getActivity()).setCurrencyFragment();
+                }
+            });
+            return false;
+        }
+    }
+
+    private void setChartSettings() {
+        lcChart.setNoDataText(getString(R.string.loading_data) + " ...");
+        lcChart.setScaleMinima(2f, 1f);
+        lcChart.getAxisRight().setEnabled(false);
+        lcChart.getLegend().setEnabled(false);
+        lcChart.getDescription().setEnabled(false);
+        lcChart.setAutoScaleMinMaxEnabled(true);
+        lcChart.setScaleYEnabled(false);
+        lcChart.setDoubleTapToZoomEnabled(false);
+        lcChart.setAnimationCacheEnabled(true);
+        lcChart.buildDrawingCache(true);
+        lcChart.setDrawingCacheEnabled(true);
+        lcChart.getViewPortHandler().setMaximumScaleX(4.8f);
+        lcChart.setHighlightPerDragEnabled(false);
+        lcChart.setHighlightPerTapEnabled(false);
+
+        XAxis xAxis = lcChart.getXAxis();
+        xAxis.setAxisLineColor(getResources().getColor(R.color.chart_values));
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAvoidFirstLastClipping(false);
+        xAxis.setTextSize(8);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                Date date = new Date((long) value);
+                return DateUtils.getDateByStr(date, DateUtils.DATE_FORMAT_OUTPUT);
+            }
+        });
+    }
+
     public class DynamicBroadcastReceiver extends BroadcastReceiver {
 
         @Override
@@ -146,6 +240,7 @@ public class ChartFragment extends BaseFragment {
             if(CurrencyRate.getInstanceDynamic() != null && response != null && response.equals(Api.CODE_SUCCESS + "")) {
                 Log.d(TAG, "dynamic rates: ");
                 Log.d(TAG, CurrencyRate.getInstanceDynamic().toString());
+                setDataOnChart();
             } else {
                 showMessage(R.string.query_no_answer);
             }

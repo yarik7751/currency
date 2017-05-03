@@ -11,6 +11,6 @@
 
     <item
         android:id="@+id/action_info"
-        android:icon="@drawable/ic_info_outline_white_24dp"
+        android:icon="@drawable/ic_calculator"
         android:title="@string/info" />
 </menu>
